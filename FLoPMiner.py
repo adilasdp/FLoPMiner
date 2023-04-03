@@ -3,7 +3,7 @@
 
 # # Import Library and Load Data
 
-# In[ ]:
+# In[1]:
 
 
 import pandas as pd
@@ -19,16 +19,16 @@ get_ipython().system('pip install bitarray')
 import copy
 
 
-# In[ ]:
+# In[2]:
 
 
-data_aktivitas = pd.read_csv("D:\ADILA\College\TA\DATA\prepo\prepo.csv")
+data_aktivitas = pd.read_csv("D:\ADILA\College\TA\DATA\prepo\prepo_3h.csv")
 data_aktivitas.tail()
 
 
 # # Constructing Sequence
 
-# In[ ]:
+# In[3]:
 
 
 #sequence dengan time interval di setiap aktivitas per hari
@@ -77,7 +77,7 @@ def extract_timestamp_new(activities, index_activities, time):
     return kegiatan_dict
 
 
-# In[ ]:
+# In[4]:
 
 
 #sequence dengan time interval di setiap aktivitas per hari
@@ -97,7 +97,7 @@ def split_activities_new(activities, index_activities):
     return splitted
 
 
-# In[ ]:
+# In[5]:
 
 
 #sequence dengan time interval per hari
@@ -110,7 +110,7 @@ for i in range(len(splitted_activities_new)):
 extracted_sequence_new
 
 
-# In[ ]:
+# In[6]:
 
 
 df = pd.DataFrame(extracted_sequence_new)
@@ -132,7 +132,7 @@ print('DataFrame is written to Excel File successfully.')
 
 # # Mining
 
-# In[ ]:
+# In[7]:
 
 
 # extract identifier
@@ -161,23 +161,29 @@ def convertIdentifier(data): #ident
     return getItemID, items
 
 #extract timestamp
-def get_timestamps(start_time, end_time, item, data):
+def get_timestamps1(start_time, end_time, item, data):
     
     ts_max = 5269391.729
 
     def get_st(input_data, item):
         for act in input_data:
+            new_value = list(act.values())
             for i in act:
                 if i == item:
-                    st = act[0][0]
+                    for x in range(len(act)):
+                        st_list = new_value[x]
+                        st = (st_list[0])
                     break
         return st
     
     def get_et(input_data, item):
         for act in input_data:
+            new_value = list(act.values())
             for i in act:
                 if i == item:
-                    et = act[0][1]
+                    for x in range(len(act)):
+                        et_list = new_value[x]
+                        et = (et_list[1])
                     break
         return et
                 
@@ -386,7 +392,7 @@ def get_result(term, panjang_term, items, getItemID, param, data): #untuk panjan
         idSetJ = getItemID[1]
         termId &= (getItemID[itemJ])
 
-        ts, pd = calc_intervals(termId, items, param, data)
+        ts, pd = calc_intervals(list(termId), items, param, data)
         if len(ts) > 0:
             new_panjang_term = panjang_term + 1
             term[panjang_term] = itemI
@@ -414,7 +420,7 @@ def get_result(term, panjang_term, items, getItemID, param, data): #untuk panjan
             idSetIJ = copy.deepcopy(idSetI)
             idSetIJ &= (getItemID[itemJ])
 
-            ts, pd = calc_intervals(idSetIJ, items, param, data)
+            ts, pd = calc_intervals(list(idSetIJ), items, param, data)
 
             if len(ts) > 0:
                 SuffixItems.append(itemJ)
@@ -452,7 +458,7 @@ def FLoPMiner(data, maxPer, maxSoPer, minDur, file_name):
     propdur_list = []
     
     for item in getItemID_items: #result item panjang-1
-        ts, pd = get_result1(getItemID[item], item, param, data)
+        ts, pd = get_result1(list(getItemID[item]), item, param, data)
         if ts > 0:
             pattern.append(item)
             lfpp.append(item)
@@ -471,7 +477,7 @@ def FLoPMiner(data, maxPer, maxSoPer, minDur, file_name):
             idSetIJ = idSetI.copy()
             idSetIJ &= idSetJ
                 
-            timeIntervals, propDur = calc_intervals(idSetIJ, itemJ, param, data)
+            timeIntervals, propDur = calc_intervals(list(idSetIJ), itemJ, param, data)
                 
             if timeIntervals > 0:
                 items.append(idSetIJ)
@@ -517,4 +523,28 @@ FLoPMiner(df_new, maxPer, maxSoPer, minDur, 'output_3h.xlsx')
 stop = timeit.default_timer()
 execution_time = stop - start
 print("Program Executed in "+str(execution_time)+" seconds")
+
+
+# In[37]:
+
+
+
+
+
+# In[9]:
+
+
+df_coba = df_new.head(10)
+
+
+# In[35]:
+
+
+get_stnih(df_coba['Sequence'][9], 'Leave_Home')
+
+
+# In[ ]:
+
+
+
 
