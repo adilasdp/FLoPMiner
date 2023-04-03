@@ -524,27 +524,3 @@ stop = timeit.default_timer()
 execution_time = stop - start
 print("Program Executed in "+str(execution_time)+" seconds")
 
-
-# In[37]:
-
-
-
-
-
-# In[9]:
-
-
-df_coba = df_new.head(10)
-
-
-# In[35]:
-
-
-get_stnih(df_coba['Sequence'][9], 'Leave_Home')
-
-
-# In[ ]:
-
-
-
-
